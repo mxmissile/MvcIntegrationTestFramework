@@ -1,4 +1,4 @@
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 
 namespace MyMvcApplication.Controllers
@@ -15,7 +15,8 @@ namespace MyMvcApplication.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOn(string username, string password)
         {
-            if((username == "steve") && (password == "secret")) {
+            if ((username == "steve") && (password == "secret"))
+            {
                 FormsAuthentication.RedirectFromLoginPage(username, false);
             }
 

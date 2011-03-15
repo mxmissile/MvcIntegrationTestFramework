@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
@@ -30,7 +29,7 @@ namespace MvcIntegrationTestFramework.Hosting
 
             _appDomainProxy.RunCodeInAppDomain(() => {
                 InitializeApplication();
-                AttachTestControllerDescriptorsForAllControllers();
+                FilterProviders.Providers.Add(new InterceptionFilterProvider());
                 LastRequestData.Reset();
             });
         }
@@ -56,16 +55,6 @@ namespace MvcIntegrationTestFramework.Hosting
             RefreshEventsList(appInstance);
 
             RecycleApplicationInstance(appInstance);
-        }
-
-        private static void AttachTestControllerDescriptorsForAllControllers()
-        {
-            var allControllerTypes = from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                                     from type in assembly.GetTypes()
-                                     where typeof (IController).IsAssignableFrom(type)
-                                     select type;
-            foreach (var controllerType in allControllerTypes)
-                InterceptionFilter.AssociateWithControllerType(controllerType);
         }
         #endregion
 

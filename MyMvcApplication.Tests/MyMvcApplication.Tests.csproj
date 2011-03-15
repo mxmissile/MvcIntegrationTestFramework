@@ -61,7 +61,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -83,10 +83,6 @@
     <ProjectReference Include="..\MvcIntegrationTestFramework\MvcIntegrationTestFramework.csproj">
       <Project>{4036AFF9-698B-463D-BE26-05D2CE3E2ABD}</Project>
       <Name>MvcIntegrationTestFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyMvcApplication\MyMvcApplication.csproj">
-      <Project>{DA471BE6-C786-4D16-A390-3111F9E86B66}</Project>
-      <Name>MyMvcApplication</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

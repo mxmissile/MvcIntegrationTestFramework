@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 
 namespace MyMvcApplication.Controllers
@@ -8,7 +7,13 @@ namespace MyMvcApplication.Controllers
     {
         public ActionResult Index()
         {
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
+            ViewBag.Message = "Welcome to ASP.NET MVC!";
+
+            return View();
+        }
+
+        public ActionResult About()
+        {
             return View();
         }
 
@@ -19,7 +24,7 @@ namespace MyMvcApplication.Controllers
             return Content("OK");
         }
 
-        [Authorize]        
+        [Authorize]
         public ActionResult SecretAction()
         {
             return Content("Hello, you're logged in as " + User.Identity.Name);

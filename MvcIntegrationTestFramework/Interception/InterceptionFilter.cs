@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 
 namespace MvcIntegrationTestFramework.Interception
@@ -11,30 +9,12 @@ namespace MvcIntegrationTestFramework.Interception
     /// </summary>
     internal class InterceptionFilter : ActionFilterAttribute
     {
-        private static readonly object staticDescriptorCacheInstance;
-        private static readonly MethodInfo fetchOrCreateItemMethod;
-
-        public static HttpContext LastHttpContext { get; private set; }
-
-        static InterceptionFilter()
-        {
-            staticDescriptorCacheInstance = typeof(ControllerActionInvoker).GetField("_staticDescriptorCache", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            fetchOrCreateItemMethod = staticDescriptorCacheInstance.GetType().GetMethod("FetchOrCreateItem", BindingFlags.NonPublic | BindingFlags.Instance);
-        }
-
-        public static void AssociateWithControllerType(Type controllerType)
-        {
-            Func<ControllerDescriptor> descriptorCreator = () => new InterceptionFilterControllerDescriptor(controllerType);
-            fetchOrCreateItemMethod.Invoke(staticDescriptorCacheInstance, new object[] {
-                controllerType, /* key */
-                descriptorCreator /* value */
-            });
-        }
+        private HttpContext lastHttpContext;
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            if (LastHttpContext == null)
-                LastHttpContext = HttpContext.Current;
+            if (lastHttpContext == null)
+                lastHttpContext = HttpContext.Current;
 
             // Clone to get a more stable snapshot
             if ((filterContext != null) && (LastRequestData.ActionExecutedContext == null))
