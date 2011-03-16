@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -102,19 +103,45 @@ namespace MvcIntegrationTestFramework.Hosting
 		/// Creates an instance of the AppHost so it can be used to simulate a browsing session.
 		/// </summary>
 		/// <returns></returns>
-		public static AppHost Simulate(string mvcProjectPath)
+		public static AppHost Simulate(string mvcProjectName)
+		{
+			var mvcProjectPath = GetMvcProjectPath(mvcProjectName);
+			if (mvcProjectPath == null)
+			{
+				throw new ArgumentException(string.Format("Mvc Project {0} not found", mvcProjectName));
+			}
+			CopyDllFiles(mvcProjectPath);
+			return new AppHost(mvcProjectPath);
+		}
+
+		private static void CopyDllFiles(string mvcProjectPath)
 		{
 			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			var pathToMvcProject = new DirectoryInfo(Path.GetFullPath(Path.Combine(baseDirectory, mvcProjectPath))).ToString();
 			foreach (var file in Directory.GetFiles(baseDirectory, "*.dll"))
 			{
-				var destFile = Path.Combine(pathToMvcProject, "bin", Path.GetFileName(file));
+				var destFile = Path.Combine(mvcProjectPath, "bin", Path.GetFileName(file));
 				if (!File.Exists(destFile) || (File.Exists(destFile) && File.GetCreationTimeUtc(destFile) != File.GetCreationTimeUtc(file)))
 				{
 					File.Copy(file, destFile, true);
 				}
 			}
-			return new AppHost(pathToMvcProject);
 		}
+
+		private static string GetMvcProjectPath(string mvcProjectName)
+		{
+			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+			var count = Regex.Matches(baseDirectory, @"\\").Count;
+			for (var i = 0; i < count; i++)
+			{
+				baseDirectory = baseDirectory.Substring(0, baseDirectory.LastIndexOf("\\"));
+				var mvcPath = Path.Combine(baseDirectory, mvcProjectName);
+				if (Directory.Exists(mvcPath))
+				{
+					return mvcPath;
+				}
+			}
+			return null;
+		}
+
 	}
 }
