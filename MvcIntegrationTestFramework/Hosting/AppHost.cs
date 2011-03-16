@@ -119,7 +119,7 @@ namespace MvcIntegrationTestFramework.Hosting
 			foreach (var file in Directory.GetFiles(baseDirectory, "*.dll"))
 			{
 				var destFile = Path.Combine(mvcProjectPath, "bin", Path.GetFileName(file));
-				if (!File.Exists(destFile) || (File.Exists(destFile) && File.GetCreationTimeUtc(destFile) != File.GetCreationTimeUtc(file)))
+				if (!File.Exists(destFile) || File.GetCreationTimeUtc(destFile) != File.GetCreationTimeUtc(file))
 				{
 					File.Copy(file, destFile, true);
 				}
