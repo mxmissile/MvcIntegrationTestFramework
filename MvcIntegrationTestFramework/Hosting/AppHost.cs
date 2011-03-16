@@ -19,16 +19,16 @@ namespace MvcIntegrationTestFramework.Hosting
 
 		private AppHost(string appPhysicalDirectory, string virtualDirectory = "/")
 		{
-			try
-			{
+			/*try
+			{*/
 				_appDomainProxy = (AppDomainProxy)ApplicationHost.CreateApplicationHost(typeof(AppDomainProxy), virtualDirectory, appPhysicalDirectory);
-			}
+			/*}
 			catch (FileNotFoundException ex)
 			{
 				if ((ex.Message != null) && ex.Message.Contains("MvcIntegrationTestFramework"))
 					throw new InvalidOperationException("Could not load MvcIntegrationTestFramework.dll within a bin directory under " + appPhysicalDirectory + ". Is this the path to your ASP.NET MVC application, and have you set up a post-build event to copy your test assemblies and their dependencies to this folder? See the demo project for an example.");
 				throw;
-			}
+			}*/
 
 			_appDomainProxy.RunCodeInAppDomain(() =>
 			{
@@ -102,12 +102,12 @@ namespace MvcIntegrationTestFramework.Hosting
 		/// Creates an instance of the AppHost so it can be used to simulate a browsing session.
 		/// </summary>
 		/// <returns></returns>
-		public static AppHost Simulate(string mvcProjectName)
+		public static AppHost Simulate(string mvcProjectDirectory)
 		{
-			var mvcProjectPath = GetMvcProjectPath(mvcProjectName);
+			var mvcProjectPath = GetMvcProjectPath(mvcProjectDirectory);
 			if (mvcProjectPath == null)
 			{
-				throw new ArgumentException(string.Format("Mvc Project {0} not found", mvcProjectName));
+				throw new ArgumentException(string.Format("Mvc Project {0} not found", mvcProjectDirectory));
 			}
 			CopyDllFiles(mvcProjectPath);
 			return new AppHost(mvcProjectPath);

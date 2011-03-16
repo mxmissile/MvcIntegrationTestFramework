@@ -13,6 +13,8 @@ namespace MyMvcApplication.Tests
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp()
 		{
+            //If you MVC project is not in the root of your solution directory then include the path
+            //e.g. AppHost.Simulate("Website\MyMvcApplication")
 			appHost = AppHost.Simulate("MyMvcApplication");
 		}
 
