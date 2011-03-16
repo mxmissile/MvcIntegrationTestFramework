@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -130,8 +129,7 @@ namespace MvcIntegrationTestFramework.Hosting
 		private static string GetMvcProjectPath(string mvcProjectName)
 		{
 			var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-			var count = Regex.Matches(baseDirectory, @"\\").Count;
-			for (var i = 0; i < count; i++)
+			while (baseDirectory.Contains("\\"))
 			{
 				baseDirectory = baseDirectory.Substring(0, baseDirectory.LastIndexOf("\\"));
 				var mvcPath = Path.Combine(baseDirectory, mvcProjectName);
@@ -142,6 +140,5 @@ namespace MvcIntegrationTestFramework.Hosting
 			}
 			return null;
 		}
-
 	}
 }
