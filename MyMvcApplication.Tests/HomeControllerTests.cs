@@ -8,10 +8,11 @@ namespace MyMvcApplication.Tests
     [TestFixture]
     public class HomeControllerTests
     {
+        private const string AppPath = @"..\..\..\MyMvcApplication";
         [Test]
         public void Root_Url_Renders_Index_View()
         {
-            AppHost.Simulate("MyMvcApplication").Start(browsingSession => {
+            AppHost.Simulate(AppPath).Start(browsingSession => {
                 // Request the root URL
                 RequestResult result = browsingSession.Get("");
 
@@ -28,7 +29,7 @@ namespace MyMvcApplication.Tests
         [Test]
         public void WorkWithCookiesAndSession()
         {
-            AppHost.Simulate("MyMvcApplication").Start(browsingSession =>
+            AppHost.Simulate(AppPath).Start(browsingSession =>
             {
                 string url = "home/DoStuffWithSessionAndCookies";
                 browsingSession.Get(url);
@@ -53,7 +54,7 @@ namespace MyMvcApplication.Tests
         {
             string securedActionUrl = "/home/SecretAction";
 
-            AppHost.Simulate("MyMvcApplication").Start(browsingSession =>
+            AppHost.Simulate(AppPath).Start(browsingSession =>
             {
                 // First try to request a secured page without being logged in                
                 RequestResult initialRequestResult = browsingSession.Get(securedActionUrl);
