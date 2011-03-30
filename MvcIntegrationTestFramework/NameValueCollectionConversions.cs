@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Web.Routing;
 
 namespace MvcIntegrationTestFramework
@@ -12,6 +13,10 @@ namespace MvcIntegrationTestFramework
 
             foreach (var kvp in dict)
             {
+                if (kvp.Value == null)
+                {
+                    throw new NullReferenceException(kvp.Key);
+                }
                 if (kvp.Value.GetType().Name.Contains("Anonymous"))
                 {
                     var prefix = kvp.Key + ".";
